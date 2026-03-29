@@ -1,9 +1,4 @@
-from src.mcp import mcp
-
-
-def main() -> None:
-    mcp.run()
-
+from src.mcp.server import main
 
 if __name__ == "__main__":
     main()

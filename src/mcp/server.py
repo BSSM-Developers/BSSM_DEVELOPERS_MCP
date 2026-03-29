@@ -181,6 +181,12 @@ async def proxy_patch(
     return _format_result(result)
 
 
+def main() -> None:
+    from src.mcp.banner import print_banner
+    print_banner()
+    mcp.run(show_banner=False)
+
+
 @mcp.tool()
 async def proxy_delete(
     client_id: str,
