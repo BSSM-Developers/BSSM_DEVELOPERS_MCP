@@ -8,7 +8,15 @@ Claude 등 AI 에이전트가 bssm-dev API 토큰을 통해 등록된 API에 요
 모든 요청은 `client_id`와 `secret_key`를 사용하는 **Server-to-Server 인증** 방식으로 처리되며,
 토큰에 등록되고 `APPROVED` 상태인 API에 대해서만 요청이 허용됩니다.
 
-## 설치 및 실행
+## 설치
+
+```bash
+uvx bssm-dev-mcp
+```
+
+별도 설치 불필요합니다. `uvx`가 자동으로 최신 버전을 다운로드하여 실행합니다.
+
+## 설정
 
 실행 전 아래 환경변수를 설정해야 합니다:
 

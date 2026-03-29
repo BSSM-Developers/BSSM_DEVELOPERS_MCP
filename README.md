@@ -8,7 +8,15 @@ It enables AI agents such as Claude to send requests to registered APIs using a 
 All requests use **Server-to-Server authentication** via `client_id` and `secret_key`.
 Only APIs that are registered on the token and have an `APPROVED` status are allowed.
 
-## Installation & Usage
+## Installation
+
+```bash
+uvx bssm-dev-mcp
+```
+
+No separate installation needed. `uvx` automatically downloads and runs the latest version.
+
+## Configuration
 
 Set the following environment variables before running:
 
