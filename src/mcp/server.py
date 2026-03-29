@@ -7,7 +7,7 @@ from fastmcp import FastMCP
 from src.bssm_dev import BssmDevProxyRequester, BssmDevTokenFetcher
 from src.mcp.permission import check_permission
 
-PROXY_BASE_URL = "https://stg-proxy.bssm-dev.com"
+PROXY_BASE_URL = "https://proxy.bssm-dev.com"
 
 mcp = FastMCP(
     name="bssm-dev-mcp",

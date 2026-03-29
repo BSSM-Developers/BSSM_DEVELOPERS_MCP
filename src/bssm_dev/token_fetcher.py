@@ -2,11 +2,11 @@ import httpx
 
 from src.core import ApiTokenDetail, RegisteredApi, TokenFetcher
 
-BSSM_DEV_BASE_URL = "https://staging.bssm-dev.com"
+BSSM_DEV_BASE_URL = "https://prod.bssm-dev.com"
 
 
 class BssmDevTokenFetcher(TokenFetcher):
-    """https://staging.bssm-dev.com/api/token/client/{client-id} 로 토큰 상세를 조회한다."""
+    """https://prod.bssm-dev.com/api/token/client/{client-id} 로 토큰 상세를 조회한다."""
 
     def __init__(self, base_url: str = BSSM_DEV_BASE_URL) -> None:
         self._base_url = base_url.rstrip("/")

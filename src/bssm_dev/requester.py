@@ -11,7 +11,7 @@ class BssmDevProxyRequester(ProxyRequester):
     proxy 서버(Server-to-Server 모드)로 요청을 전달한다.
     """
 
-    BASE_URL = "https://stg-proxy.bssm-dev.com"
+    BASE_URL = "https://proxy.bssm-dev.com"
 
     def __init__(
         self, client_id: str, secret_key: str, base_url: str = BASE_URL
