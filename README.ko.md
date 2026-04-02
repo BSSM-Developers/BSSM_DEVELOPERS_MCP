@@ -10,11 +10,30 @@ Claude 등 AI 에이전트가 bssm-dev API 토큰을 통해 등록된 API에 요
 
 ## 설치
 
+### 한 줄 설치 (권장)
+
 ```bash
-uvx bssm-dev-mcp
+curl -fsSL https://raw.githubusercontent.com/BSSM-Developers/BSSM_DEVELOPERS_MCP/main/install.sh \
+  | sh -s -- --client-id YOUR_CLIENT_ID --secret-key YOUR_SECRET_KEY
 ```
 
-별도 설치 불필요합니다. `uvx`가 자동으로 최신 버전을 다운로드하여 실행합니다.
+환경변수로 자격증명을 전달할 수도 있습니다:
+
+```bash
+BSSM_CLIENT_ID=YOUR_CLIENT_ID BSSM_SECRET_KEY=YOUR_SECRET_KEY \
+  curl -fsSL https://raw.githubusercontent.com/BSSM-Developers/BSSM_DEVELOPERS_MCP/main/install.sh | sh
+```
+
+스크립트가 하는 일:
+1. `uv`가 없으면 자동 설치
+2. `uv tool install`로 `bssm-dev-mcp` 설치
+3. `claude mcp add`로 MCP 서버 등록
+
+### 수동 설치
+
+```bash
+uv tool install bssm-dev-mcp
+```
 
 ## 설정
 

@@ -10,11 +10,30 @@ Only APIs that are registered on the token and have an `APPROVED` status are all
 
 ## Installation
 
+### One-line install (recommended)
+
 ```bash
-uvx bssm-dev-mcp
+curl -fsSL https://raw.githubusercontent.com/BSSM-Developers/BSSM_DEVELOPERS_MCP/main/install.sh \
+  | sh -s -- --client-id YOUR_CLIENT_ID --secret-key YOUR_SECRET_KEY
 ```
 
-No separate installation needed. `uvx` automatically downloads and runs the latest version.
+Or pass credentials via environment variables:
+
+```bash
+BSSM_CLIENT_ID=YOUR_CLIENT_ID BSSM_SECRET_KEY=YOUR_SECRET_KEY \
+  curl -fsSL https://raw.githubusercontent.com/BSSM-Developers/BSSM_DEVELOPERS_MCP/main/install.sh | sh
+```
+
+This script will:
+1. Install `uv` if not present
+2. Install `bssm-dev-mcp` via `uv tool install`
+3. Register the MCP server with `claude mcp add`
+
+### Manual install
+
+```bash
+uv tool install bssm-dev-mcp
+```
 
 ## Configuration
 
