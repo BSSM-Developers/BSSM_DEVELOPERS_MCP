@@ -10,29 +10,34 @@ Only APIs that are registered on the token and have an `APPROVED` status are all
 
 ## Installation
 
-### One-line install (recommended)
+### Step 1 — Install globally (once)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/BSSM-Developers/BSSM_DEVELOPERS_MCP/main/install.sh \
-  | sh -s -- --client-id YOUR_CLIENT_ID --secret-key YOUR_SECRET_KEY
+curl -fsSL https://raw.githubusercontent.com/BSSM-Developers/BSSM_DEVELOPERS_MCP/main/install.sh | sh
 ```
 
-Or pass credentials via environment variables:
+Installs `uv` if needed, then installs `bssm-dev-mcp` and `bssm-dev-mcp-setup` globally via `uv tool`.
+
+### Step 2 — Register per project
+
+Run this inside any project directory:
 
 ```bash
-BSSM_CLIENT_ID=YOUR_CLIENT_ID BSSM_SECRET_KEY=YOUR_SECRET_KEY \
-  curl -fsSL https://raw.githubusercontent.com/BSSM-Developers/BSSM_DEVELOPERS_MCP/main/install.sh | sh
+bssm-dev-mcp-setup --client-id YOUR_CLIENT_ID --secret-key YOUR_SECRET_KEY
 ```
 
-This script will:
-1. Install `uv` if not present
-2. Install `bssm-dev-mcp` via `uv tool install`
-3. Register the MCP server with `claude mcp add`
+An interactive prompt will ask which AI client to configure (Claude Code, Gemini, or OpenCode).
 
-### Manual install
+You can also skip the prompt with `--client`:
 
 ```bash
-uv tool install bssm-dev-mcp
+bssm-dev-mcp-setup --client-id YOUR_CLIENT_ID --secret-key YOUR_SECRET_KEY --client claude
+```
+
+Or use environment variables:
+
+```bash
+BSSM_CLIENT_ID=YOUR_CLIENT_ID BSSM_SECRET_KEY=YOUR_SECRET_KEY bssm-dev-mcp-setup
 ```
 
 ## Configuration

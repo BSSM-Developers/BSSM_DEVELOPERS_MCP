@@ -10,6 +10,7 @@ dependencies = [
 
 [project.scripts]
 bssm-dev-mcp = "src.mcp.server:main"
+bssm-dev-mcp-setup = "src.setup:main"
 
 [build-system]
 requires = ["hatchling"]

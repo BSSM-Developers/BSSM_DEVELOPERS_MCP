@@ -10,29 +10,34 @@ Claude 등 AI 에이전트가 bssm-dev API 토큰을 통해 등록된 API에 요
 
 ## 설치
 
-### 한 줄 설치 (권장)
+### Step 1 — 전역 설치 (최초 1회)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/BSSM-Developers/BSSM_DEVELOPERS_MCP/main/install.sh \
-  | sh -s -- --client-id YOUR_CLIENT_ID --secret-key YOUR_SECRET_KEY
+curl -fsSL https://raw.githubusercontent.com/BSSM-Developers/BSSM_DEVELOPERS_MCP/main/install.sh | sh
 ```
 
-환경변수로 자격증명을 전달할 수도 있습니다:
+`uv`가 없으면 자동으로 설치하고, `bssm-dev-mcp`와 `bssm-dev-mcp-setup`을 전역으로 설치합니다.
+
+### Step 2 — 프로젝트별 MCP 등록
+
+프로젝트 디렉토리 안에서 실행합니다:
 
 ```bash
-BSSM_CLIENT_ID=YOUR_CLIENT_ID BSSM_SECRET_KEY=YOUR_SECRET_KEY \
-  curl -fsSL https://raw.githubusercontent.com/BSSM-Developers/BSSM_DEVELOPERS_MCP/main/install.sh | sh
+bssm-dev-mcp-setup --client-id YOUR_CLIENT_ID --secret-key YOUR_SECRET_KEY
 ```
 
-스크립트가 하는 일:
-1. `uv`가 없으면 자동 설치
-2. `uv tool install`로 `bssm-dev-mcp` 설치
-3. `claude mcp add`로 MCP 서버 등록
+어떤 AI 클라이언트에 등록할지 대화형으로 선택할 수 있습니다 (Claude Code, Gemini, OpenCode).
 
-### 수동 설치
+`--client` 옵션으로 선택을 생략할 수도 있습니다:
 
 ```bash
-uv tool install bssm-dev-mcp
+bssm-dev-mcp-setup --client-id YOUR_CLIENT_ID --secret-key YOUR_SECRET_KEY --client claude
+```
+
+환경변수로 전달하는 방법:
+
+```bash
+BSSM_CLIENT_ID=YOUR_CLIENT_ID BSSM_SECRET_KEY=YOUR_SECRET_KEY bssm-dev-mcp-setup
 ```
 
 ## 설정
