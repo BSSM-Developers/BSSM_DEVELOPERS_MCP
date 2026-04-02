@@ -23,22 +23,10 @@ Installs `uv` if needed, then installs `bssm-dev-mcp` and `bssm-dev-mcp-setup` g
 Run this inside any project directory:
 
 ```bash
-bssm-dev-mcp-setup --client-id YOUR_CLIENT_ID --secret-key YOUR_SECRET_KEY
+bssm-dev-mcp-setup
 ```
 
-An interactive prompt will ask which AI client to configure (Claude Code, Gemini, or OpenCode).
-
-You can also skip the prompt with `--client`:
-
-```bash
-bssm-dev-mcp-setup --client-id YOUR_CLIENT_ID --secret-key YOUR_SECRET_KEY --client claude
-```
-
-Or use environment variables:
-
-```bash
-BSSM_CLIENT_ID=YOUR_CLIENT_ID BSSM_SECRET_KEY=YOUR_SECRET_KEY bssm-dev-mcp-setup
-```
+You will be prompted to enter your Token Client ID, Secret Key, and choose an AI client (Claude Code, Gemini, or OpenCode).
 
 ## Configuration
 

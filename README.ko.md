@@ -23,22 +23,10 @@ curl -fsSL https://raw.githubusercontent.com/BSSM-Developers/BSSM_DEVELOPERS_MCP
 프로젝트 디렉토리 안에서 실행합니다:
 
 ```bash
-bssm-dev-mcp-setup --client-id YOUR_CLIENT_ID --secret-key YOUR_SECRET_KEY
+bssm-dev-mcp-setup
 ```
 
-어떤 AI 클라이언트에 등록할지 대화형으로 선택할 수 있습니다 (Claude Code, Gemini, OpenCode).
-
-`--client` 옵션으로 선택을 생략할 수도 있습니다:
-
-```bash
-bssm-dev-mcp-setup --client-id YOUR_CLIENT_ID --secret-key YOUR_SECRET_KEY --client claude
-```
-
-환경변수로 전달하는 방법:
-
-```bash
-BSSM_CLIENT_ID=YOUR_CLIENT_ID BSSM_SECRET_KEY=YOUR_SECRET_KEY bssm-dev-mcp-setup
-```
+Token Client ID, Secret Key를 순서대로 입력하고 AI 클라이언트(Claude Code, Gemini, OpenCode)를 선택하면 등록이 완료됩니다.
 
 ## 설정
 

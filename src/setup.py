@@ -1,4 +1,3 @@
-import argparse
 import json
 import os
 import shutil
@@ -99,34 +98,30 @@ def _register_opencode(command: str, client_id: str, secret_key: str) -> None:
     _update_json(path, update)
 
 
+def _prompt(label: str, env_key: str) -> str:
+    default = os.environ.get(env_key, "")
+    try:
+        value = input(f"{label}: ").strip()
+    except (EOFError, KeyboardInterrupt):
+        print()
+        sys.exit(0)
+    value = value or default
+    if not value:
+        error(f"{label}을(를) 입력해주세요.")
+    return value
+
+
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        prog="bssm-dev-mcp-setup",
-        description="bssm-dev-mcp를 AI 클라이언트에 MCP 서버로 등록합니다.",
-    )
-    parser.add_argument("--client-id", default=os.environ.get("BSSM_CLIENT_ID", ""))
-    parser.add_argument("--secret-key", default=os.environ.get("BSSM_SECRET_KEY", ""))
-    parser.add_argument(
-        "--client",
-        choices=["claude", "gemini", "opencode"],
-        help="AI 클라이언트 (생략 시 대화형 선택)",
-    )
-    args = parser.parse_args()
-
-    if not args.client_id or not args.secret_key:
-        error(
-            "--client-id와 --secret-key가 필요합니다.\n"
-            "    또는 BSSM_CLIENT_ID, BSSM_SECRET_KEY 환경변수를 설정하세요."
-        )
-
-    client = args.client or _select_client()
+    client_id = _prompt("Token Client ID", "BSSM_CLIENT_ID")
+    secret_key = _prompt("Secret Key", "BSSM_SECRET_KEY")
+    client = _select_client()
     command = _get_mcp_command()
 
     if client == "claude":
-        _register_claude(command, args.client_id, args.secret_key)
+        _register_claude(command, client_id, secret_key)
     elif client == "gemini":
-        _register_gemini(command, args.client_id, args.secret_key)
+        _register_gemini(command, client_id, secret_key)
     elif client == "opencode":
-        _register_opencode(command, args.client_id, args.secret_key)
+        _register_opencode(command, client_id, secret_key)
 
     info("완료!")
