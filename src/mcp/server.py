@@ -55,6 +55,19 @@ async def get_token_detail() -> str:
     token_detail = await _token_fetcher.fetch(client_id)
     result = {
         "proxyBaseUrl": PROXY_BASE_URL,
+        "authentication": {
+            "browser": {
+                "description": "브라우저(클라이언트) 환경에서 사용 시 필요한 헤더",
+                "headers": {"bssm-dev-token": "<발급받은 API 토큰의 client_id>"},
+            },
+            "server": {
+                "description": "서버(백엔드) 환경에서 사용 시 필요한 헤더",
+                "headers": {
+                    "bssm-dev-token": "<발급받은 API 토큰의 client_id>",
+                    "bssm-dev-secret": "<발급받은 API 토큰의 secret_key>",
+                },
+            },
+        },
         "apiTokenId": token_detail.api_token_id,
         "apiTokenName": token_detail.api_token_name,
         "apiTokenClientId": token_detail.api_token_client_id,
