@@ -17,4 +17,7 @@ uv tool install "$PACKAGE" --force
 
 info "설치 완료!"
 printf "\n프로젝트 디렉토리에서 아래 명령어로 MCP를 등록하세요:\n"
-printf "\n  ${GREEN}bssm-dev-mcp-setup${NC}\n\n"
+printf "\n  ${GREEN}bssm-dev-mcp-setup${NC}\n"
+printf "\n업데이트할 때는:\n"
+printf "\n  ${GREEN}uv tool upgrade bssm-dev-mcp${NC}\n"
+printf "\n업데이트 후 AI 클라이언트를 재시작하면 새 버전이 적용됩니다.\n\n"

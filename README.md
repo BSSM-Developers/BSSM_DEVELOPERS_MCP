@@ -28,6 +28,14 @@ bssm-dev-mcp-setup
 
 You will be prompted to enter your Token Client ID, Secret Key, and choose an AI client (Claude Code, Gemini, or OpenCode).
 
+### Updating
+
+```bash
+uv tool upgrade bssm-dev-mcp
+```
+
+Then restart your AI client to apply the new version.
+
 ## Configuration
 
 Set the following environment variables before running:

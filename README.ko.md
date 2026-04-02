@@ -28,6 +28,14 @@ bssm-dev-mcp-setup
 
 Token Client ID, Secret Key를 순서대로 입력하고 AI 클라이언트(Claude Code, Gemini, OpenCode)를 선택하면 등록이 완료됩니다.
 
+### 업데이트
+
+```bash
+uv tool upgrade bssm-dev-mcp
+```
+
+업데이트 후 AI 클라이언트를 재시작하면 새 버전이 적용됩니다.
+
 ## 설정
 
 실행 전 아래 환경변수를 설정해야 합니다:
