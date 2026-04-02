@@ -3,6 +3,8 @@ import os
 import shutil
 import subprocess
 import sys
+import termios
+import tty
 
 SERVER_NAME = "bssm-dev-mcp"
 
@@ -98,10 +100,42 @@ def _register_opencode(command: str, client_id: str, secret_key: str) -> None:
     _update_json(path, update)
 
 
-def _prompt(label: str, env_key: str) -> str:
+def _masked_input(label: str) -> str:
+    sys.stdout.write(f"{label}: ")
+    sys.stdout.flush()
+    fd = sys.stdin.fileno()
+    old = termios.tcgetattr(fd)
+    chars: list[str] = []
+    try:
+        tty.setraw(fd)
+        while True:
+            ch = sys.stdin.read(1)
+            if ch in ("\r", "\n"):
+                break
+            if ch == "\x03":  # Ctrl+C
+                raise KeyboardInterrupt
+            if ch in ("\x7f", "\x08"):  # backspace
+                if chars:
+                    chars.pop()
+                    sys.stdout.write("\b \b")
+                    sys.stdout.flush()
+            else:
+                chars.append(ch)
+                sys.stdout.write("*")
+                sys.stdout.flush()
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old)
+        sys.stdout.write("\n")
+    return "".join(chars)
+
+
+def _prompt(label: str, env_key: str, secret: bool = False) -> str:
     default = os.environ.get(env_key, "")
     try:
-        value = input(f"{label}: ").strip()
+        if secret:
+            value = _masked_input(label).strip()
+        else:
+            value = input(f"{label}: ").strip()
     except (EOFError, KeyboardInterrupt):
         print()
         sys.exit(0)
@@ -113,7 +147,7 @@ def _prompt(label: str, env_key: str) -> str:
 
 def main() -> None:
     client_id = _prompt("Token Client ID", "BSSM_CLIENT_ID")
-    secret_key = _prompt("Secret Key", "BSSM_SECRET_KEY")
+    secret_key = _prompt("Secret Key", "BSSM_SECRET_KEY", secret=True)
     client = _select_client()
     command = _get_mcp_command()
 

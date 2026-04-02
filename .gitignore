@@ -24,6 +24,9 @@ uv.lock
 .env.*
 !.env.example
 
+# Local dev
+Makefile
+
 # IDE
 .idea/
 .vscode/
