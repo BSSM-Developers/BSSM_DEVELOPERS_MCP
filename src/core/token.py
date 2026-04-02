@@ -3,12 +3,21 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
+class DocsBlock:
+    id: str
+    mapped_id: str
+    module: str
+    content: str
+
+
+@dataclass(frozen=True)
 class RegisteredApi:
     api_id: str
     name: str
     endpoint: str
     api_method: str
     api_use_state: str
+    docs_blocks: list[DocsBlock]
 
 
 @dataclass(frozen=True)

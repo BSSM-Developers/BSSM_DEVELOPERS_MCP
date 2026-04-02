@@ -1,6 +1,6 @@
 import httpx
 
-from src.core import ApiTokenDetail, RegisteredApi, TokenFetcher
+from src.core import ApiTokenDetail, DocsBlock, RegisteredApi, TokenFetcher
 
 BSSM_DEV_BASE_URL = "https://prod.bssm-dev.com"
 
@@ -27,6 +27,15 @@ class BssmDevTokenFetcher(TokenFetcher):
                 endpoint=api["endpoint"],
                 api_method=api["apiMethod"],
                 api_use_state=api["apiUseState"],
+                docs_blocks=[
+                    DocsBlock(
+                        id=block["id"],
+                        mapped_id=block["mappedId"],
+                        module=block["module"],
+                        content=block["content"],
+                    )
+                    for block in api.get("docsBlocks", [])
+                ],
             )
             for api in data.get("registeredApis", [])
         ]

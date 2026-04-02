@@ -68,6 +68,13 @@ async def get_token_detail() -> str:
                 "fullUrl": f"{PROXY_BASE_URL}{api.endpoint}",
                 "apiMethod": api.api_method,
                 "apiUseState": api.api_use_state,
+                "docsBlocks": [
+                    {
+                        "module": block.module,
+                        "content": block.content,
+                    }
+                    for block in api.docs_blocks
+                ],
             }
             for api in token_detail.registered_apis
         ],
