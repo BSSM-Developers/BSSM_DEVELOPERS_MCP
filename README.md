@@ -2,13 +2,17 @@
 
 > [한국어 README](README.ko.md)
 
-`bssm-dev-mcp` is an MCP (Model Context Protocol) server for communicating with the [bssm-dev](https://bssm-dev.com) proxy API.
-It enables AI agents such as Claude to send requests to registered APIs using a bssm-dev API token.
+An MCP (Model Context Protocol) server that lets AI agents like Claude call [bssm-dev](https://bssm-dev.com) proxy APIs directly.
 
-All requests use **Server-to-Server authentication** via `client_id` and `secret_key`.
-Only APIs that are registered on the token and have an `APPROVED` status are allowed.
+Set your API token's `client_id` and `secret_key` as environment variables, and the AI will automatically discover the registered APIs and send requests on your behalf.
+
+---
 
 ## Installation
+
+### Requirements
+
+- [uv](https://docs.astral.sh/uv/) (auto-installed by the install script if missing)
 
 ### Step 1 — Install globally (once)
 
@@ -16,17 +20,19 @@ Only APIs that are registered on the token and have an `APPROVED` status are all
 curl -fsSL https://raw.githubusercontent.com/BSSM-Developers/BSSM_DEVELOPERS_MCP/main/install.sh | sh
 ```
 
-Installs `uv` if needed, then installs `bssm-dev-mcp` and `bssm-dev-mcp-setup` globally via `uv tool`.
+This installs `bssm-dev-mcp` and the setup helper `bssm-dev-mcp-setup` globally.
 
 ### Step 2 — Register per project
 
-Run this inside any project directory:
+Run this inside your project directory:
 
 ```bash
 bssm-dev-mcp-setup
 ```
 
-You will be prompted to enter your Token Client ID, Secret Key, and choose an AI client (Claude Code, Gemini, or OpenCode).
+Enter your Token Client ID and Secret Key, then choose your AI client. The tool writes the config automatically.
+
+> **Supported clients:** Claude Code · Claude Desktop · Gemini · OpenCode
 
 ### Updating
 
@@ -34,18 +40,22 @@ You will be prompted to enter your Token Client ID, Secret Key, and choose an AI
 uv tool upgrade bssm-dev-mcp
 ```
 
-Then restart your AI client to apply the new version.
+Restart your AI client after upgrading to apply the new version.
 
-## Configuration
+---
 
-Set the following environment variables before running:
+## Manual Configuration
 
-| Variable | Description |
-|----------|-------------|
-| `BSSM_CLIENT_ID` | bssm-dev API token client ID |
-| `BSSM_SECRET_KEY` | bssm-dev API token secret key |
+You can also edit config files directly instead of using `bssm-dev-mcp-setup`.
 
-**Claude Desktop config (`claude_desktop_config.json`):**
+**Claude Code:**
+```bash
+claude mcp add bssm-dev-mcp uvx bssm-dev-mcp \
+  -e BSSM_CLIENT_ID=your-client-id \
+  -e BSSM_SECRET_KEY=your-secret-key
+```
+
+**Claude Desktop (`claude_desktop_config.json`):**
 ```json
 {
   "mcpServers": {
@@ -61,49 +71,95 @@ Set the following environment variables before running:
 }
 ```
 
-**Claude Code CLI:**
-```bash
-claude mcp add bssm-dev-mcp uvx bssm-dev-mcp \
-  -e BSSM_CLIENT_ID=your-client-id \
-  -e BSSM_SECRET_KEY=your-secret-key
+| Variable | Description |
+|---|---|
+| `BSSM_CLIENT_ID` | bssm-dev API token Client ID |
+| `BSSM_SECRET_KEY` | bssm-dev API token Secret Key |
+
+---
+
+## Usage
+
+1. Issue an API token from [bssm-dev](https://bssm-dev.com).
+2. Register the APIs you want to use on the token and set them to `APPROVED`.
+3. Complete the installation above — your AI client is ready to use.
+
+Just ask in natural language:
+
 ```
+Show me the list of available APIs.
+
+Fetch the student roster for grade 1, class 2.
+```
+
+---
 
 ## Available Tools
 
-| Tool | Description |
-|------|-------------|
-| `get_token_detail` | Retrieve API token details by `client_id` (name, status, allowed origins, registered APIs) |
-| `proxy_get` | Send a GET request through the bssm-dev proxy |
-| `proxy_post` | Send a POST request through the bssm-dev proxy |
-| `proxy_put` | Send a PUT request through the bssm-dev proxy |
-| `proxy_patch` | Send a PATCH request through the bssm-dev proxy |
-| `proxy_delete` | Send a DELETE request through the bssm-dev proxy |
+### `get_token_detail`
 
-## How to Use
-
-1. Issue an API token from [bssm-dev](https://bssm-dev.com).
-2. Register the APIs you want to use on the token and set their status to `APPROVED`.
-3. Set `BSSM_CLIENT_ID` and `BSSM_SECRET_KEY` environment variables.
-
-### Example
+Retrieves the list of APIs registered on the token, authentication instructions, and allowed origins.
+Used by the AI to understand which APIs are available and how to call them.
 
 ```
 get_token_detail()
+```
 
+### `proxy_get` / `proxy_post` / `proxy_put` / `proxy_patch` / `proxy_delete`
+
+Calls an API through the bssm-dev proxy using the corresponding HTTP method.
+
+```
 proxy_get(
   path="/student/1/2",
   query_params="{\"page\": \"1\"}"
 )
+
+proxy_post(
+  path="/api/posts",
+  body="{\"title\": \"Hello\", \"content\": \"World\"}"
+)
 ```
+
+| Parameter | Description |
+|---|---|
+| `path` | API path (e.g. `/student/1/2/3`) |
+| `body` | JSON request body (POST · PUT · PATCH) |
+| `query_params` | JSON query parameters |
+
+### `proxy_stream`
+
+Use this when the upstream API returns SSE (Server-Sent Events).
+Sends the request with an `Accept: text/event-stream` header and returns all received events. (up to 60 seconds)
+
+```
+proxy_stream(
+  method="GET",
+  path="/api/chat/stream",
+  body="{\"prompt\": \"Hello\"}"
+)
+```
+
+| Parameter | Description |
+|---|---|
+| `method` | HTTP method (GET, POST, etc.) |
+| `path` | API path |
+| `body` | JSON request body |
+| `query_params` | JSON query parameters |
+
+---
 
 ## Permission Check
 
-Before each request, the server automatically validates against the registered API list on the token.
-- Calls to APIs not in `APPROVED` status are rejected.
-- Unregistered paths or methods raise a `PermissionError`.
+Every request is validated against the token's registered API list before being forwarded to the proxy.
+
+- Requests to APIs not in `APPROVED` status are rejected.
+- Unregistered paths or methods raise a `PermissionError` along with a list of approved APIs.
 - Path templates such as `/student/{grade}/{classNum}` are supported.
+
+---
 
 ## Requirements
 
 - Python 3.12+
-- [uv](https://docs.astral.sh/uv/) (for `uvx`)
+- [uv](https://docs.astral.sh/uv/)

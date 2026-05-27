@@ -216,6 +216,39 @@ async def proxy_delete(
     return _format_result(result)
 
 
+@mcp.tool()
+async def proxy_stream(
+    method: str,
+    path: str,
+    body: str = "{}",
+    query_params: str = "{}",
+) -> str:
+    """bssm-dev proxy 서버에 SSE 스트리밍 요청을 전송한다.
+
+    Accept: text/event-stream 헤더를 포함하여 업스트림의 SSE 스트림을 수신한다.
+    수신된 모든 이벤트 라인을 개행으로 이어 붙여 반환한다. (최대 60초 대기)
+
+    토큰에 등록된 registeredApis 중 APPROVED 상태인 엔드포인트에만 요청할 수 있다.
+
+    Args:
+        method: HTTP 메서드 (GET, POST 등)
+        path: 요청할 API 경로 (예: /api/chat)
+        body: JSON 형식의 요청 바디 (예: {"prompt": "Hello"})
+        query_params: JSON 형식의 쿼리 파라미터
+    """
+    client_id, _ = _get_credentials()
+    await check_permission(client_id, method, path)
+    req_body: dict[str, Any] = json.loads(body) if body.strip() else {}
+    params: dict[str, str] = json.loads(query_params) if query_params.strip() else {}
+    result = await _get_requester().stream(
+        method=method,
+        path=path,
+        body=req_body or None,
+        query_params=params or None,
+    )
+    return _format_result(result)
+
+
 def main() -> None:
     from src.mcp.banner import print_banner
     print_banner()

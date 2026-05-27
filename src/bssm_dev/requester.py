@@ -111,3 +111,32 @@ class BssmDevProxyRequester(ProxyRequester):
                 params=query_params,
             )
         return self._parse_response(response)
+
+    async def stream(
+        self,
+        method: str,
+        path: str,
+        body: dict[str, Any] | None = None,
+        query_params: dict[str, str] | None = None,
+    ) -> dict[str, Any]:
+        headers = {**self._build_headers(), "Accept": "text/event-stream"}
+        lines: list[str] = []
+        status_code = 0
+
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            async with client.stream(
+                method.upper(),
+                self._build_url(path),
+                headers=headers,
+                json=body,
+                params=query_params,
+            ) as response:
+                status_code = response.status_code
+                async for line in response.aiter_lines():
+                    if line:
+                        lines.append(line)
+
+        return {
+            "status_code": status_code,
+            "data": "\n".join(lines),
+        }

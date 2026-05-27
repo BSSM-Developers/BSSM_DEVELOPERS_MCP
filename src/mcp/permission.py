@@ -7,9 +7,9 @@ _token_fetcher = BssmDevTokenFetcher()
 
 
 def _template_to_pattern(endpoint: str) -> re.Pattern:
-    """/student/{grade}/{classNum} → ^/student/[^/]+/[^/]+$ 로 변환한다."""
+    """/student/{grade}/{classNum} → ^/student/[^/?]+/[^/?]+$ 로 변환한다."""
     escaped = re.escape(endpoint)
-    pattern = re.sub(r"\\\{[^}]+\\}", "[^/]+", escaped)
+    pattern = re.sub(r"\\\{[^}]+\\}", "[^/?]+", escaped)
     return re.compile(f"^{pattern}$")
 
 

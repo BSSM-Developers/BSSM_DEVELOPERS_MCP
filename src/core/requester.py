@@ -52,3 +52,14 @@ class ProxyRequester(ABC):
     ) -> dict[str, Any]:
         """DELETE 요청을 프록시 서버로 전달한다."""
         raise NotImplementedError
+
+    @abstractmethod
+    async def stream(
+        self,
+        method: str,
+        path: str,
+        body: dict[str, Any] | None = None,
+        query_params: dict[str, str] | None = None,
+    ) -> dict[str, Any]:
+        """SSE 스트리밍 요청을 프록시 서버로 전달하고 수신된 이벤트를 반환한다."""
+        raise NotImplementedError
