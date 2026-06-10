@@ -32,7 +32,9 @@ bssm-dev-mcp-setup
 
 Enter your Token Client ID and Secret Key, then choose your AI client. The tool writes the config automatically.
 
-> **Supported clients:** Claude Code · Claude Desktop · Gemini · OpenCode
+> **Supported clients:** Claude Code · Gemini · OpenCode
+>
+> Claude Desktop is not supported by the setup tool — use [Manual Configuration](#manual-configuration) instead.
 
 ### Updating
 

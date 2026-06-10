@@ -32,7 +32,9 @@ bssm-dev-mcp-setup
 
 Token Client ID, Secret Key를 입력하고 AI 클라이언트를 선택하면 자동으로 설정 파일에 등록됩니다.
 
-> **지원 클라이언트:** Claude Code · Claude Desktop · Gemini · OpenCode
+> **지원 클라이언트:** Claude Code · Gemini · OpenCode
+>
+> Claude Desktop은 설정 도우미를 지원하지 않습니다. [수동 설정](#수동-설정)을 사용하세요.
 
 ### 업데이트
 
