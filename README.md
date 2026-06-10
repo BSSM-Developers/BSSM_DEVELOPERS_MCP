@@ -1,54 +1,52 @@
 # bssm-dev-mcp
 
-> [한국어 README](README.ko.md)
+Claude 등 AI 에이전트가 [bssm-dev](https://bssm-dev.com) 프록시 API를 직접 호출할 수 있게 해주는 MCP(Model Context Protocol) 서버입니다.
 
-An MCP (Model Context Protocol) server that lets AI agents like Claude call [bssm-dev](https://bssm-dev.com) proxy APIs directly.
-
-Set your API token's `client_id` and `secret_key` as environment variables, and the AI will automatically discover the registered APIs and send requests on your behalf.
+API 토큰의 `client_id`와 `secret_key`를 환경변수로 설정하면, AI가 토큰에 등록된 API를 자동으로 파악하고 요청을 대신 전송합니다.
 
 ---
 
-## Installation
+## 설치
 
-### Requirements
+### 요구사항
 
-- [uv](https://docs.astral.sh/uv/) (auto-installed by the install script if missing)
+- [uv](https://docs.astral.sh/uv/) (없으면 설치 스크립트가 자동으로 설치합니다)
 
-### Step 1 — Install globally (once)
+### Step 1 — 전역 설치 (최초 1회)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/BSSM-Developers/BSSM_DEVELOPERS_MCP/main/install.sh | sh
 ```
 
-This installs `bssm-dev-mcp` and the setup helper `bssm-dev-mcp-setup` globally.
+`bssm-dev-mcp`와 설정 도우미 `bssm-dev-mcp-setup`이 전역으로 설치됩니다.
 
-### Step 2 — Register per project
+### Step 2 — 프로젝트에 MCP 등록
 
-Run this inside your project directory:
+사용할 프로젝트 디렉토리 안에서 실행합니다:
 
 ```bash
 bssm-dev-mcp-setup
 ```
 
-Enter your Token Client ID and Secret Key, then choose your AI client. The tool writes the config automatically.
+Token Client ID, Secret Key를 입력하고 AI 클라이언트를 선택하면 자동으로 설정 파일에 등록됩니다.
 
-> **Supported clients:** Claude Code · Gemini · OpenCode
+> **지원 클라이언트:** Claude Code · Gemini · OpenCode
 >
-> Claude Desktop is not supported by the setup tool — use [Manual Configuration](#manual-configuration) instead.
+> Claude Desktop은 설정 도우미를 지원하지 않습니다. [수동 설정](#수동-설정)을 사용하세요.
 
-### Updating
+### 업데이트
 
 ```bash
 uv tool upgrade bssm-dev-mcp
 ```
 
-Restart your AI client after upgrading to apply the new version.
+업데이트 후 AI 클라이언트를 재시작하면 새 버전이 적용됩니다.
 
 ---
 
-## Manual Configuration
+## 수동 설정
 
-You can also edit config files directly instead of using `bssm-dev-mcp-setup`.
+`bssm-dev-mcp-setup` 대신 직접 설정 파일을 편집할 수도 있습니다.
 
 **Claude Code:**
 ```bash
@@ -73,35 +71,35 @@ claude mcp add bssm-dev-mcp uvx bssm-dev-mcp \
 }
 ```
 
-| Variable | Description |
+| 환경변수 | 설명 |
 |---|---|
-| `BSSM_CLIENT_ID` | bssm-dev API token Client ID |
-| `BSSM_SECRET_KEY` | bssm-dev API token Secret Key |
+| `BSSM_CLIENT_ID` | bssm-dev API 토큰의 Client ID |
+| `BSSM_SECRET_KEY` | bssm-dev API 토큰의 Secret Key |
 
 ---
 
-## Usage
+## 사용 방법
 
-1. Issue an API token from [bssm-dev](https://bssm-dev.com).
-2. Register the APIs you want to use on the token and set them to `APPROVED`.
-3. Complete the installation above — your AI client is ready to use.
+1. [bssm-dev](https://bssm-dev.com)에서 API 토큰을 발급받습니다.
+2. 토큰에 사용할 API를 등록하고 `APPROVED` 상태로 설정합니다.
+3. 위 설치 과정을 마치면 AI 클라이언트에서 바로 사용할 수 있습니다.
 
-Just ask in natural language:
+AI에게 자연어로 요청하면 됩니다:
 
 ```
-Show me the list of available APIs.
+현재 사용 가능한 API 목록을 알려줘.
 
-Fetch the student roster for grade 1, class 2.
+1학년 2반 학생 명단을 조회해줘.
 ```
 
 ---
 
-## Available Tools
+## 제공 도구 (Tools)
 
 ### `get_token_detail`
 
-Retrieves the list of APIs registered on the token, authentication instructions, and allowed origins.
-Used by the AI to understand which APIs are available and how to call them.
+토큰에 등록된 API 목록, 인증 방법, 허용 도메인 등 상세 정보를 조회합니다.
+AI가 어떤 API를 어떻게 호출할 수 있는지 파악할 때 사용됩니다.
 
 ```
 get_token_detail()
@@ -109,7 +107,7 @@ get_token_detail()
 
 ### `proxy_get` / `proxy_post` / `proxy_put` / `proxy_patch` / `proxy_delete`
 
-Calls an API through the bssm-dev proxy using the corresponding HTTP method.
+각 HTTP 메서드로 bssm-dev 프록시를 통해 API를 호출합니다.
 
 ```
 proxy_get(
@@ -119,49 +117,49 @@ proxy_get(
 
 proxy_post(
   path="/api/posts",
-  body="{\"title\": \"Hello\", \"content\": \"World\"}"
+  body="{\"title\": \"안녕하세요\", \"content\": \"내용입니다\"}"
 )
 ```
 
-| Parameter | Description |
+| 파라미터 | 설명 |
 |---|---|
-| `path` | API path (e.g. `/student/1/2/3`) |
-| `body` | JSON request body (POST · PUT · PATCH) |
-| `query_params` | JSON query parameters |
+| `path` | API 경로 (예: `/student/1/2/3`) |
+| `body` | JSON 형식의 요청 바디 (POST·PUT·PATCH) |
+| `query_params` | JSON 형식의 쿼리 파라미터 |
 
 ### `proxy_stream`
 
-Use this when the upstream API returns SSE (Server-Sent Events).
-Sends the request with an `Accept: text/event-stream` header and returns all received events. (up to 60 seconds)
+업스트림 API가 SSE(Server-Sent Events)를 반환할 때 사용합니다.
+`Accept: text/event-stream` 헤더를 포함하여 요청하고, 수신된 이벤트를 모아 반환합니다. (최대 60초)
 
 ```
 proxy_stream(
   method="GET",
   path="/api/chat/stream",
-  body="{\"prompt\": \"Hello\"}"
+  body="{\"prompt\": \"안녕하세요\"}"
 )
 ```
 
-| Parameter | Description |
+| 파라미터 | 설명 |
 |---|---|
-| `method` | HTTP method (GET, POST, etc.) |
-| `path` | API path |
-| `body` | JSON request body |
-| `query_params` | JSON query parameters |
+| `method` | HTTP 메서드 (GET, POST 등) |
+| `path` | API 경로 |
+| `body` | JSON 형식의 요청 바디 |
+| `query_params` | JSON 형식의 쿼리 파라미터 |
 
 ---
 
-## Permission Check
+## 권한 검사
 
-Every request is validated against the token's registered API list before being forwarded to the proxy.
+모든 요청은 프록시로 전달되기 전에 토큰의 등록 API 목록을 자동으로 확인합니다.
 
-- Requests to APIs not in `APPROVED` status are rejected.
-- Unregistered paths or methods raise a `PermissionError` along with a list of approved APIs.
-- Path templates such as `/student/{grade}/{classNum}` are supported.
+- `APPROVED` 상태가 아닌 API 호출은 거부됩니다.
+- 등록되지 않은 경로 또는 메서드는 `PermissionError`가 발생하며 승인된 API 목록을 함께 알려줍니다.
+- 경로 템플릿(`/student/{grade}/{classNum}`)을 지원합니다.
 
 ---
 
-## Requirements
+## 요구사항
 
 - Python 3.12+
 - [uv](https://docs.astral.sh/uv/)
